@@ -76,6 +76,7 @@ def viewdetails(request,id):
     print(package)
     return render(request,'viewdetails.html',{'dest': dest,'package': package}) 
 
+
 def bookings(request, id):  # id = Package id
     package = get_object_or_404(Package, id=id)
 
@@ -88,11 +89,14 @@ def bookings(request, id):  # id = Package id
         guests = request.POST.get('guests')
         message = request.POST.get('message')
 
-        # For demo, assume number_of_people is parsed from `guests`
         number_of_people = 1 if guests == "1" else 2 if guests == "2" else 4 if guests == "3-4" else 5
 
-        customer = Customer.objects.get(user=request.user)
+        try:
+            customer = Customer.objects.get(user=request.user)
+        except Customer.DoesNotExist:
+            return redirect('profile_create')
 
+        # 🛠 This part must be OUTSIDE of except:
         booking = Booking.objects.create(
             customer=customer,
             travel_package=package,
@@ -101,9 +105,10 @@ def bookings(request, id):  # id = Package id
             status='Pending'
         )
 
-        return redirect('booking_revi', id=package.id)  # or wherever you want to go after
+        return redirect('booking_revi', id=package.id)
 
     return render(request, 'bookings.html', {'package': package})
+
 
 
 def booking_review(request, id):  # id = Package id
