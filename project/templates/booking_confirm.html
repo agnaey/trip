@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Booking Confirmation</h2>
+
+    <p><strong>Package:</strong> {{ package.title }}</p>
+    <p><strong>Number of People:</strong> {{ number_of_people }}</p>
+    <p><strong>Total Price:</strong> ${{ total_price }}</p>
+
+    <form method="POST" action="{% url 'my_bookings' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Confirm Booking</button>
+    </form>
+</body>
+</html>

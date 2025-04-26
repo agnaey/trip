@@ -42,7 +42,6 @@ class Booking(models.Model):
     travel_package = models.ForeignKey(Package, on_delete=models.CASCADE)
     booking_date = models.DateTimeField(auto_now_add=True)
     number_of_people = models.PositiveIntegerField()
-    trip_date = models.DateField()
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=50, choices=[
         ('Pending', 'Pending'),
@@ -56,8 +55,8 @@ class Booking(models.Model):
 
 class Review(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    # travel_package = models.ForeignKey(Package, on_delete=models.CASCADE)
-    rating = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])
+    # travel_package = models.ForeignKey(travelPackage, on_delete=models.CASCADE)
+    rating = models.IntegerField()
     comment = models.TextField()
     date_posted = models.DateTimeField(auto_now_add=True)
 

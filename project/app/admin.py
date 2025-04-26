@@ -1,9 +1,7 @@
 from django.contrib import admin
+from .models import Destination, Package, Customer, Booking, Review
 
-from .models import *
-
-# Register your models here.
-
+# Register your models here
 admin.site.register(Destination)
 admin.site.register(Package)
 admin.site.register(Customer)

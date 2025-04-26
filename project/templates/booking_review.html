@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Review Your Booking</h2>
+        <p><strong>Package:</strong> {{ package.title }}</p>
+        <p><strong>Description:</strong> {{ package.description }}</p>
+        <p><strong>Duration:</strong> {{ package.duration_days }} Days</p>
+        <p><strong>Price:</strong> ₹{{ package.price }} per person</p>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="guests">Number of Guests</label>
+                <input type="number" class="form-control" name="guests" min="1" required>
+            </div>
+    
+            <button type="submit" class="btn btn-primary mt-3">Proceed to Confirm Booking</button>
+        </form>
+    </div>
+</body>
+</html>

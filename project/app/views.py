@@ -7,8 +7,6 @@ from .models import *
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
-from django.db.models import Avg
-
 
 
 
@@ -66,21 +64,154 @@ def userlogout(request):
     request.session.flush()
     return render(request, 'home.html')
 
-# -----------------------------------------------------------------------------------
+# ---------------------------------------------------------------------
 
 def home(request):
-    dest=Destination.objects.all()
-    return render(request,'home.html',{'dest':dest})
+    destinations = Destination.objects.all()
+    return render(request,'home.html',{'destinations': destinations})
 
-def sec(request,id):
-    dest=Destination.objects.get(id=id)
-    return render(request,'sec.html',{'dest':dest})
+def viewdetails(request,id):
+    dest = Destination.objects.get(id=id)
+    package = Package.objects.filter(destination=dest)
+    print(package)
+    return render(request,'viewdetails.html',{'dest': dest,'package': package}) 
+
+def bookings(request, id):  # id = Package id
+    package = get_object_or_404(Package, id=id)
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        checkin = request.POST.get('checkin')
+        checkout = request.POST.get('checkout')
+        guests = request.POST.get('guests')
+        message = request.POST.get('message')
+
+        # For demo, assume number_of_people is parsed from `guests`
+        number_of_people = 1 if guests == "1" else 2 if guests == "2" else 4 if guests == "3-4" else 5
+
+        customer = Customer.objects.get(user=request.user)
+
+        booking = Booking.objects.create(
+            customer=customer,
+            travel_package=package,
+            number_of_people=number_of_people,
+            total_price=number_of_people * package.price,
+            status='Pending'
+        )
+
+        return redirect('booking_revi', id=package.id)  # or wherever you want to go after
+
+    return render(request, 'bookings.html', {'package': package})
 
 
+def booking_review(request, id):  # id = Package id
+    package = get_object_or_404(Package, id=id)
+
+    if request.method == 'POST':
+        # Check if the customer exists
+        try:
+            customer = Customer.objects.get(user=request.user)
+        except Customer.DoesNotExist:
+            # If no customer profile exists, show an error message
+            messages.error(request, 'You need to create a customer profile before making a booking.')
+            return redirect('profile_create')  # Redirect to the profile creation page (you need to create this view)
+
+        # Extract form data
+        number_of_people = request.POST.get('guests')
+
+        if not number_of_people or not number_of_people.isdigit() or int(number_of_people) <= 0:
+            messages.error(request, 'Please enter a valid number of guests.')
+            return redirect('booking_review', id=id)
+
+        # Calculate total price based on number of people
+        total_price = int(number_of_people) * package.price
+
+        # Create a temporary booking object or simply pass this data to the confirmation page
+        context = {
+            'package': package,
+            'number_of_people': number_of_people,
+            'total_price': total_price,
+        }
+        return render(request, 'booking_confirm.html', context)
+
+    return render(request, 'booking_review.html', {'package': package})
+
+def profile_create(request):
+    if request.method == 'POST':
+        # Get the form data manually from the request
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+
+        # Check if data is provided
+        if not phone or not address:
+            messages.error(request, "Both phone and address are required.")
+            return redirect('profile_create')
+
+        # Create and save the customer profile
+        try:
+            customer = Customer.objects.create(user=request.user, phone=phone, address=address)
+            customer.save()
+            messages.success(request, "Profile created successfully.")
+            return redirect('home')  # Redirect after successful profile creation
+        except Exception as e:
+            messages.error(request, f"An error occurred: {str(e)}")
+            return redirect('profile_create')
+    
+    return render(request, 'profile.html')
+
+def confirm_booking(request, id):  # id = Package id
+    package = get_object_or_404(Package, id=id)
+
+    if request.method == 'POST':
+        # Check if the customer exists
+        try:
+            customer = Customer.objects.get(user=request.user)
+        except Customer.DoesNotExist:
+            messages.error(request, 'You need to create a customer profile before confirming the booking.')
+            return redirect('profile_create')  # Redirect to the profile creation page
+
+        # Extract form data from the session or POST
+        number_of_people = request.POST.get('guests')
+        total_price = int(number_of_people) * package.price
+
+        # Create a new booking object
+        booking = Booking.objects.create(
+            customer=customer,
+            package=package,
+            number_of_people=number_of_people,
+            total_price=total_price,
+            status='Confirmed',  # Mark as confirmed
+        )
+
+        messages.success(request, 'Your booking has been confirmed successfully!')
+        return redirect('my_bookings')  # Redirect to a success page
+
+    return render(request, 'booking_confirm.html', {'package': package})
+
+def my_bookings(request):
+    # Ensure the user is logged in
+    if not request.user.is_authenticated:
+        return redirect('login')  # Redirect to login page if the user is not authenticated
+
+    try:
+        # Get the customer's profile
+        customer = request.user.customer  # Assuming each user has a corresponding Customer profile
+    except Customer.DoesNotExist:
+        # If no customer profile exists, show an error message
+        messages.error(request, 'You need to create a customer profile to view your bookings.')
+        return redirect('profile_create')  # Redirect to profile creation page
+
+    # Retrieve all bookings for the logged-in customer
+    bookings = Booking.objects.filter(customer=customer)
+
+    return render(request, 'my_bookings.html', {'bookings': bookings})
 
 
+def destinations(request,id):
+ 
 
-def destinations(request):
     return render(request,'destinations.html')
 def packages(request):
     return render(request,'packages.html')
@@ -89,3 +220,6 @@ def aboutus(request):
 
 def booknow(request):
     return render(request,'booknow.html')    
+
+
+

@@ -1,0 +1,341 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Destination Details | Trippify</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  
+  <!-- Custom Styles -->
+  <style>
+    :root {
+      --primary-color: #ff6b6b;
+      --secondary-color: #5f27cd;
+      --light-color: #f9f9f9;
+      --dark-color: #222831;
+    }
+
+    body {
+      background: url("{% static 'images/bg.jpg' %}") no-repeat center center;
+      background-size: cover;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .hero-img {
+      height: 400px;
+      object-fit: cover;
+      border-radius: 1rem;
+    }
+
+    .feature-icon {
+      font-size: 1.5rem;
+      color: #0d6efd;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: absolute;
+      padding: 0.8rem 1rem;
+      background-color: rgba(255, 255, 255, 0);
+      transition: all 0.3s ease;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--primary-color);
+      letter-spacing: 1px;
+    }
+
+    .navbar-brand span {
+      color: var(--secondary-color);
+    }
+
+    .nav-item {
+      padding: 0 10px;
+      position: relative;
+    }
+
+    .nav-link {
+      color: var(--dark-color);
+      font-weight: 500;
+      font-size: 1rem;
+      transition: color 0.3s;
+      padding: 0.5rem 0.8rem;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--primary-color);
+    }
+
+    .nav-item::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-color);
+      bottom: 0;
+      left: 10px;
+      transition: width 0.3s ease-in-out;
+    }
+
+    .nav-item:hover::after,
+    .nav-item.active::after {
+      width: calc(100% - 20px);
+    }
+
+    /* User Dropdown */
+    .user-dropdown .dropdown-toggle::after {
+      display: none;
+    }
+
+    .user-dropdown .dropdown-menu {
+      border-radius: 10px;
+      border: none;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      padding: 10px 0;
+      min-width: 200px;
+      margin-top: 15px;
+    }
+
+    .user-dropdown .dropdown-item {
+      color: var(--dark-color);
+      font-weight: 500;
+      padding: 10px 20px;
+      transition: all 0.2s;
+    }
+
+    .user-dropdown .dropdown-item:hover {
+      background-color: rgba(255, 107, 107, 0.1);
+      color: var(--primary-color);
+    }
+
+    .user-dropdown .dropdown-item i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .user-icon {
+      width: 36px;
+      height: 36px;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+
+    .user-icon:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    .navbar-toggler {
+      border: none;
+      padding: 0.25rem 0.5rem;
+    }
+
+    .navbar-toggler:focus {
+      box-shadow: none;
+    }
+
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 107, 107, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    .navbar.scrolled {
+      padding: 0.5rem 1rem;
+      background-color: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .book-now-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 50px;
+      padding: 0.5rem 1.5rem;
+      font-weight: 600;
+      transition: all 0.3s;
+      border: 2px solid var(--primary-color);
+    }
+
+    .book-now-btn:hover {
+      background-color: transparent;
+      color: var(--primary-color);
+    }
+
+    @media (min-width: 992px) {
+      .navbar-expand-lg .navbar-nav .nav-link {
+        padding-right: 1rem;
+        padding-left: 1rem;
+      }
+    }
+ 
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container viewdetails">
+    <a class="navbar-brand" href="{% url 'home' %}">𝕥𝕣𝕚𝕡𝕡𝕚𝕗𝕪</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+       
+        <li class="nav-item"><a class="nav-link" href="{% url 'destinations' %}">Destinations</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'packages' %}">Packages</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'aboutus' %}">About Us</a></li>
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown user-dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdownMenu" data-bs-toggle="dropdown">
+            <div class="user-icon"><i class="fas fa-user"></i></div>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#"><i class="fas fa-envelope"></i> Contact us</a></li>
+            <li><a class="dropdown-item" href="{% url 'userlogout' %}"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+          </ul>
+        </li>
+       
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="container py-4 mt-5 pt-5">
+  <img src="{{ dest.image.url }}" class="w-100 hero-img mb-4" alt="Destination Image">
+  <h1 class="display-5 fw-bold">Explore the Beauty of Bali</h1>
+  <p class="text-muted">{{ dest.name }} | {{ dest.place }}</p>
+</section>
+
+<!-- Main Content -->
+<section class="container py-4">
+  <div class="row g-4" style="background-color: rgba(255, 255, 255, 0.7);">
+    <!-- Main Description -->
+    <div class="col-lg-8">
+      <h4>About the Destination</h4>
+      <p>{{ dest.description }}</p>
+      
+      <h5 class="mt-4">Highlights</h5>
+      <ul class="list-unstyled row row-cols-2 g-2">
+        <li class="d-flex align-items-center"><span class="me-2 feature-icon">🌴</span> Tropical Vibes</li>
+        <li class="d-flex align-items-center"><span class="me-2 feature-icon">🏄</span> Surfing & Water Sports</li>
+        <li class="d-flex align-items-center"><span class="me-2 feature-icon">🕌</span> Temples & Culture</li>
+        <li class="d-flex align-items-center"><span class="me-2 feature-icon">🍲</span> Local Cuisine</li>
+      </ul>
+
+      <h5 class="mt-5">Gallery</h5>
+      <div class="row g-2">
+        <div class="col-6 col-md-4"><img src="{{ dest.image.url }}" class="img-fluid rounded" alt="Gallery Image"></div>
+        <div class="col-6 col-md-4"><img src="{{  dest.image.url }}" class="img-fluid rounded" alt="Gallery Image"></div>
+        <div class="col-6 col-md-4"><img src="https://via.placeholder.com/300" class="img-fluid rounded" alt="Gallery Image"></div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm rounded-4 p-4">
+        {% if package %}
+          {% for pack in package %}
+            <p><strong>Price:</strong> ₹{{ pack.price }} per person</p>
+            <p><strong>Duration:</strong> {{ pack.duration_days }} Days</p>
+            <p><strong>Available:</strong> {{ pack.start_date|date:"M d, Y" }} to {{ pack.end_date|date:"M d, Y" }}</p>
+      
+            <a href="{% url 'bookings' pack.id %}">
+              <button class="btn btn-primary w-100 mt-3">Book Now</button>
+            </a>
+      
+            {% if not forloop.last %}
+              <hr class="my-4">
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          <p class="text-muted">No packages available for this destination right now.</p>
+        {% endif %}
+      </div>
+      
+
+     
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<footer class="text-white pt-5 pb-4" style="background: linear-gradient(to right, #1f4037, #99f2c8);">
+  <div class="container text-center text-md-start">
+    <div class="row text-center text-md-start">
+
+      <!-- Logo and Description -->
+      <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+        <h4 class="text-uppercase fw-bold mb-4">Trippify</h4>
+        <p>Your premium travel companion. Discover, explore, and create memories with hand-picked destinations across the globe.</p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+        <h6 class="text-uppercase fw-bold mb-4">Quick Links</h6>
+        <p><a href="/" class="text-white text-decoration-none">Home</a></p>
+        <p><a href="/destinations" class="text-white text-decoration-none">Destinations</a></p>
+        <p><a href="/about" class="text-white text-decoration-none">About</a></p>
+        <p><a href="/contact" class="text-white text-decoration-none">Contact</a></p>
+      </div>
+
+      <!-- Popular Locations -->
+      <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+        <h6 class="text-uppercase fw-bold mb-4">Top Places</h6>
+        <p><a href="#" class="text-white text-decoration-none">Munnar</a></p>
+        <p><a href="#" class="text-white text-decoration-none">Wayanad</a></p>
+        <p><a href="#" class="text-white text-decoration-none">Goa</a></p>
+        <p><a href="#" class="text-white text-decoration-none">Manali</a></p>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+        <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+        <p><i class="fas fa-home me-2"></i> India, Kerala 678901</p>
+        <p><i class="fas fa-envelope me-2"></i> support@trippify.com</p>
+        <p><i class="fas fa-phone me-2"></i> +91 98765 43210</p>
+      </div>
+    </div>
+
+    <!-- Social Media Icons -->
+    <div class="row mt-4">
+      <div class="col-md-12 text-center">
+        <a href="#" class="text-white me-4 fs-5"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="text-white me-4 fs-5"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="text-white me-4 fs-5"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="text-white me-4 fs-5"><i class="fab fa-youtube"></i></a>
+        <a href="#" class="text-white me-4 fs-5"><i class="fab fa-pinterest"></i></a>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="text-center mt-4">
+      <p class="mb-0">&copy; 2025 <strong>Trippify</strong>. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

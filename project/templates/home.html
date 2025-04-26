@@ -247,16 +247,7 @@
     .card:hover {
       transform: translateY(-5px);
     }
-  
-    .btn-gradient {
-      background: linear-gradient(45deg, #0066ff, #66ccff);
-      border: none;
-      color: white;
-    }
-  
-    .btn-gradient:hover {
-      background: linear-gradient(45deg, #005ce6, #33bbff);
-    }
+
 
 
     .destination-card {
@@ -268,16 +259,7 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   }
 
-  .btn-gradient {
-    background: linear-gradient(45deg, #0d6efd, #00b4d8);
-    color: #fff;
-    border: none;
-  }
 
-  .btn-gradient:hover {
-    background: linear-gradient(45deg, #00b4d8, #0d6efd);
-    color: #fff;
-  }
     
     </style>
 </head>
@@ -291,15 +273,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
+              {% if not user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="btn btn-gradient nav-link active" style="border-radius: 50px; background-color: var(--primary-color);" href="{% url 'signup' %}">Signup</a>
+                    <a class="btn btn-gradient nav-link active" style="border-radius: 50px;" href="{% url 'signup' %}">Signup</a>
                 </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'destinations' %}">Destinations</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'packages' %}">Packages</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'my_bookings' %}">My Bookings</a>
+              </li>
               
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'aboutus' %}">About Us</a>
@@ -318,7 +305,7 @@
                     </ul>
                 </li>
                 <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-                    <a href="{% url 'booknow' %}" class="btn book-now-btn">Book Now</a>
+                    <a href="" class="btn book-now-btn">Book Now</a>
                 </li>
                 {% endif %}
             </ul>
@@ -360,58 +347,29 @@
 <!-- Destination Cards Section -->
 <div class="container my-5">
   <div class="row g-4 justify-content-center">
-    {% for dest in dest %}
+    
     <!-- Card 1 -->
+     {% for destination in destinations %}
     <div class="col-md-6 col-lg-4">
       <div class="card shadow-lg border-0 rounded-4 overflow-hidden h-100 destination-card">
-        <img src="{{ dest.image.url }}" class="card-img-top" alt="Munnar" style="height: 220px; object-fit: cover;">
+        <img src="{{ destination.image.url }}" class="card-img-top" alt="Munnar" style="height: 220px; object-fit: cover;">
         <div class="card-body text-center bg-light p-4">
-          <h5 class="card-title fw-bold mb-1">{{ dest.name }}</h5>
-          <p class="text-muted small mb-2">{{ dest.place }}</p>
+          <h5 class="card-title fw-bold mb-1">{{ destination.name }}</h5>
+          <p class="text-muted small mb-2">Queen of hills</p>
           <div class="mb-2">
             <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#189;</span>
-            <span class="text-muted small">({{ dest.rating }} 5)</span>
+            <span class="text-muted small">(4.5 / 5)</span>
           </div>
-          <p class="card-text text-muted small">{{ dest.description }}</p>
-          <a href="sec/{{ dest.id }}" class="btn btn-primary btn-gradient rounded-pill px-4 mt-3">View Details</a>
+          <p class="card-text text-muted small">{{ destination.description }}.</p>
+          <a href="{% url 'viewdetails' destination.id %}" class="btn btn-primary btn-gradient rounded-pill px-4 mt-3">View Details</a>
         </div>
       </div>
     </div>
     {% endfor %}
 
-    <!-- Card 2 -->
-    <div class="col-md-6 col-lg-4">
-      <div class="card shadow-lg border-0 rounded-4 overflow-hidden h-100 destination-card">
-        <img src="{% static 'images/wayanad.jpg' %}" class="card-img-top" alt="Wayanad" style="height: 220px; object-fit: cover;">
-        <div class="card-body text-center bg-light p-4">
-          <h5 class="card-title fw-bold mb-1">Wayanad</h5>
-          <p class="text-muted small mb-2">Banasura Sagar Dam Wayanad best Picnic Experience</p>
-          <div class="mb-2">
-            <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#189;</span>
-            <span class="text-muted small">(4.5 / 5)</span>
-          </div>
-          <p class="card-text text-muted small">Explore lush green tea gardens, misty valleys, and scenic viewpoints in this peaceful hill station of Kerala.</p>
-          <a href="#" class="btn btn-primary btn-gradient rounded-pill px-4 mt-3">View Details</a>
-        </div>
-      </div>
-    </div>
 
-    <!-- Card 3 -->
-    <div class="col-md-6 col-lg-4">
-      <div class="card shadow-lg border-0 rounded-4 overflow-hidden h-100 destination-card">
-        <img src="{% static 'images/munnar.jpg' %}" class="card-img-top" alt="Munnar" style="height: 220px; object-fit: cover;">
-        <div class="card-body text-center bg-light p-4">
-          <h5 class="card-title fw-bold mb-1">Munnar</h5>
-          <p class="text-muted small mb-2">The Queen of the Hills</p>
-          <div class="mb-2">
-            <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#189;</span>
-            <span class="text-muted small">(4.5 / 5)</span>
-          </div>
-          <p class="card-text text-muted small">Explore lush green tea gardens, misty valleys, and scenic viewpoints in this peaceful hill station of Kerala.</p>
-          <a href="#" class="btn btn-primary btn-gradient rounded-pill px-4 mt-3">View Details</a>
-        </div>
-      </div>
-    </div>
+
+
 
   </div>
 </div>

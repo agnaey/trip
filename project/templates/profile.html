@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- profile_create.html -->
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="text" name="phone" id="phone" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="address">Address</label>
+        <textarea name="address" id="address" class="form-control" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Profile</button>
+</form>
+
+</body>
+</html>
