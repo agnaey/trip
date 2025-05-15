@@ -1,0 +1,33 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">All Bookings</h2>
+  <table class="table table-striped table-bordered table-hover mt-3">
+    <thead class="table-dark">
+      <tr>
+        <th>Customer</th>
+        <th>Package</th>
+        <th>People</th>
+        <th>Total Price</th>
+        <th>Status</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for booking in bookings %}
+      <tr>
+        <td>{{ booking.customer.user.username }}</td>
+        <td>{{ booking.travel_package.title }}</td>
+        <td>{{ booking.number_of_people }}</td>
+        <td>${{ booking.total_price }}</td>
+        <td>
+          <span class="badge {% if booking.status == 'Confirmed' %}bg-success{% elif booking.status == 'Pending' %}bg-warning{% else %}bg-danger{% endif %}">
+            {{ booking.status }}
+          </span>
+        </td>
+        <td>{{ booking.booking_date|date:"Y-m-d H:i" }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-center">No bookings yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

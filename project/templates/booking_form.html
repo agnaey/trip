@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-primary text-white text-center">
+          <h4 class="mb-0">Book Your Trip</h4>
+        </div>
+        <div class="card-body">
+
+          <h5 class="card-title">{{ package.title }}</h5>
+          <p><strong>Duration:</strong> {{ package.duration_days }} days</p>
+          <p><strong>Start Date:</strong> {{ package.start_date }}</p>
+          <p><strong>End Date:</strong> {{ package.end_date }}</p>
+
+          <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="number_of_people" class="form-label">Number of People</label>
+              <input type="number" name="number_of_people" id="number_of_people" class="form-control" required min="1" max="20" placeholder="Enter number of travelers">
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">Proceed to Payment</button>
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

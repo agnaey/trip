@@ -1,0 +1,301 @@
+<style>    :root {
+    --primary-color: #ff6b6b;
+    --secondary-color: #5f27cd;
+    --light-color: #f9f9f9;
+    --dark-color: #222831;
+}
+
+body {
+    background: url("{% static 'images/bg.jpg' %}") no-repeat center center;
+    background-size: cover;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4f4;
+}
+
+.navbar {
+    padding: 0.8rem 1rem;
+    background-color: rgba(255, 255, 255, 0);
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    letter-spacing: 1px;
+}
+
+.navbar-brand span {
+    color: var(--secondary-color);
+}
+
+.nav-item {
+    padding: 0 10px;
+    position: relative;
+}
+
+.nav-link {
+    color: var(--dark-color);
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.3s;
+    padding: 0.5rem 0.8rem;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--primary-color);
+}
+
+/* Animated underline effect */
+.nav-item::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    bottom: 0;
+    left: 10px;
+    transition: width 0.3s ease-in-out;
+}
+
+.nav-item:hover::after, .nav-item.active::after {
+    width: calc(100% - 20px);
+}
+
+/* User dropdown styling */
+.user-dropdown .dropdown-toggle::after {
+    display: none;
+}
+
+.user-dropdown .dropdown-menu {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    min-width: 200px;
+    margin-top: 15px;
+}
+
+.user-dropdown .dropdown-item {
+    color: var(--dark-color);
+    font-weight: 500;
+    padding: 10px 20px;
+    transition: all 0.2s;
+}
+
+.user-dropdown .dropdown-item:hover {
+    background-color: rgba(255, 107, 107, 0.1);
+    color: var(--primary-color);
+}
+
+.user-dropdown .dropdown-item i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+/* User icon styling */
+.user-icon {
+    width: 36px;
+    height: 36px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.user-icon:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+/* Mobile menu toggle button styling */
+.navbar-toggler {
+    border: none;
+    padding: 0.25rem 0.5rem;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 107, 107, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Sticky navbar animation */
+.navbar.scrolled {
+    padding: 0.5rem 1rem;
+    background-color: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Book now button */
+.book-now-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    border: 2px solid var(--primary-color);
+}
+
+.book-now-btn:hover {
+    background-color: transparent;
+    color: var(--primary-color);
+}
+
+/* For screens larger than 992px */
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding-right: 1rem;
+        padding-left: 1rem;
+    }
+}
+
+
+</style>
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">𝕥𝕣𝕚𝕡𝕡𝕚𝕗𝕪</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              {% if not user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="btn btn-gradient nav-link active" style="border-radius: 50px;" href="{% url 'signup' %}">Signup</a>
+                </li>
+                {% endif %}
+               
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'packages' %}">Packages</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'my_bookings' %}">My Bookings</a>
+              </li>
+              
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'aboutus' %}">About Us</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown user-dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdownMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="user-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdownMenu">
+                       
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-envelope"></i> Contact us</a></li>
+                        <li><a class="dropdown-item" href="{% url 'userlogout' %}"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                    <a href="" class="btn book-now-btn">Book Now</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<footer class="text-white pt-5 pb-4" style="background: linear-gradient(to right, #649ace, #569ebb);">
+    <div class="container text-center text-md-start">
+      <div class="row text-center text-md-start">
+  
+        <!-- Logo and Description -->
+        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h4 class="text-uppercase fw-bold mb-4">Trippify</h4>
+          <p>Your premium travel companion. Discover, explore, and create memories with hand-picked destinations across the globe.</p>
+        </div>
+  
+        <!-- Quick Links -->
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+          <h6 class="text-uppercase fw-bold mb-4">Quick Links</h6>
+          <p><a href="/" class="text-white text-decoration-none">Home</a></p>
+          <p><a href="/destinations" class="text-white text-decoration-none">Destinations</a></p>
+          <p><a href="/about" class="text-white text-decoration-none">About</a></p>
+          <p><a href="/contact" class="text-white text-decoration-none">Contact</a></p>
+        </div>
+  
+        <!-- Popular Locations -->
+        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+          <h6 class="text-uppercase fw-bold mb-4">Top Places</h6>
+          <p><a href="#" class="text-white text-decoration-none">Munnar</a></p>
+          <p><a href="#" class="text-white text-decoration-none">Wayanad</a></p>
+          <p><a href="#" class="text-white text-decoration-none">Goa</a></p>
+          <p><a href="#" class="text-white text-decoration-none">Manali</a></p>
+        </div>
+  
+        <!-- Contact Info -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+          <p><i class="fas fa-home me-2"></i> India, Kerala 678901</p>
+          <p><i class="fas fa-envelope me-2"></i> support@trippify.com</p>
+          <p><i class="fas fa-phone me-2"></i> +91 98765 43210</p>
+        </div>
+      </div>
+  
+      <!-- Social Media Icons -->
+      <div class="row mt-4">
+        <div class="col-md-12 text-center">
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-youtube"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-pinterest"></i></a>
+        </div>
+      </div>
+  
+      <!-- Copyright -->
+      <div class="text-center mt-4">
+        <p class="mb-0">&copy; 2025 <strong>Trippify</strong>. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Font Awesome CDN -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  
+
+
+
+  
+
+
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Add scrolled class to navbar when scrolling
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+</script>
+
+<script>
+    // Initialize AOS animations
+    document.addEventListener('DOMContentLoaded', function() {
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out'
+        });
+    });
+</script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+
+</body>
+</html>

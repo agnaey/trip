@@ -1,0 +1,25 @@
+<div class="container mt-4">
+    <h2>All Customers</h2>
+    <table class="table table-bordered table-hover mt-3">
+      <thead class="table-light">
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Address</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for customer in customers %}
+        <tr>
+          <td>{{ customer.user.username }}</td>
+          <td>{{ customer.user.email }}</td>
+          <td>{{ customer.phone_number }}</td>
+          <td>{{ customer.address }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="text-center">No customers found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>

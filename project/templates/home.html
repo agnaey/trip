@@ -242,6 +242,7 @@
     gap:20px
 }
 
+container text-center
 
 
     .card:hover {
@@ -278,9 +279,7 @@
                     <a class="btn btn-gradient nav-link active" style="border-radius: 50px;" href="{% url 'signup' %}">Signup</a>
                 </li>
                 {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'destinations' %}">Destinations</a>
-                </li>
+               
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'packages' %}">Packages</a>
                 </li>
@@ -349,19 +348,15 @@
   <div class="row g-4 justify-content-center">
     
     <!-- Card 1 -->
-     {% for destination in destinations %}
-    <div class="col-md-6 col-lg-4">
-      <div class="card shadow-lg border-0 rounded-4 overflow-hidden h-100 destination-card">
-        <img src="{{ destination.image.url }}" class="card-img-top" alt="Munnar" style="height: 220px; object-fit: cover;">
-        <div class="card-body text-center bg-light p-4">
-          <h5 class="card-title fw-bold mb-1">{{ destination.name }}</h5>
-          <p class="text-muted small mb-2">Queen of hills</p>
-          <div class="mb-2">
-            <span class="text-warning">&#9733;&#9733;&#9733;&#9733;&#189;</span>
-            <span class="text-muted small">(4.5 / 5)</span>
-          </div>
-          <p class="card-text text-muted small">{{ destination.description }}.</p>
-          <a href="{% url 'viewdetails' destination.id %}" class="btn btn-primary btn-gradient rounded-pill px-4 mt-3">View Details</a>
+    {% for i in Packages %}
+    <div class="col-md-4">
+      <div class="card destination-card h-100 shadow-sm border-0">
+        <img src="{{ i.image.url }}" class="card-img-top" alt="{{ i.title }}">
+        <div class="card-body text-center">
+          <h5 class="card-title fw-bold">{{ i.title }}</h5>
+          <p class="card-text text-muted">{{ i.destination.name }}</p>
+          <p class="card-text">{{ i.duration_days }} Days </p>
+          <a href="{% url 'viewpackagedetails' i.id %}" class="btn btn-outline-primary mt-2">View Details</a>
         </div>
       </div>
     </div>
@@ -378,48 +373,40 @@
 
 
 
-  <!-- Testimonials Section -->
-  <section class="py-5 bg-light">
-    <div class="container text-center">
-      <h2 class="fw-bold mb-5">What Our Travelers Say</h2>
-  
-      <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-  
-          {% for testimonial in testimonials %}
-          <div class="carousel-item {% if forloop.first %}active{% endif %}">
-            <div class="row justify-content-center">
-              <div class="col-md-8">
-                <div class="bg-white p-5 shadow rounded">
-                  <p class="text-muted fst-italic fs-5">“{{ testimonial.message }}”</p>
-                  <h5 class="fw-bold mt-3">– {{ testimonial.name }}</h5>
-                </div>
+<section class=" py-5">
+  <div class="container">
+      <h2 class="text-center mb-5">Our Premium Vehicles</h2>
+      <div class="row g-4">
+
+          {% for vehicle in vehicles %}
+              <div class="col-md-4">
+                  <div class="card vehicle-card">
+                      <img src="{{ vehicle.image.url }}" class="card-img-top vehicle-img" alt="{{ vehicle.name }}">
+                      <div class="card-body">
+                          <h5 class="vehicle-name">{{ vehicle.name }}</h5>
+                          <div class="d-flex justify-content-between align-items-center">
+                              <span class="price">₹{{ vehicle.price }} per Trip</span>
+                          </div>
+                         
+                                                    </div>
+                  </div>
               </div>
-            </div>
-          </div>
+          {% empty %}
+              <div class="col-12">
+                  <p class="text-center">No vehicles available at the moment.</p>
+              </div>
           {% endfor %}
-  
-        </div>
-  
-        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
+
       </div>
+  </div>
+</section>
   
-    </div>
-  </section>
-  
 
 
 
 
-<!-- CTA Section -->
-<section class="py-5 text-white text-center" style="background: linear-gradient(to right, #8dd4c1, #99f2c8);">
+<!-- CTA Section -->99f2c8
+<section class="py-5 text-white text-center" style="background: linear-gradient(to right,#649ace, #569ebb);">
   <div class="container">
     <h2 class="fw-bold mb-3">Ready to Explore?</h2>
     <p class="lead">Book your next adventure with Trippify and experience the world like never before.</p>
@@ -428,7 +415,7 @@
 </section>
 
 
-  <footer class="text-white pt-5 pb-4" style="background: linear-gradient(to right, #1f4037, #99f2c8);">
+  <footer class="text-white pt-5 pb-4" style="background: linear-gradient(to right, #649ace, #569ebb);">
     <div class="container text-center text-md-start">
       <div class="row text-center text-md-start">
   

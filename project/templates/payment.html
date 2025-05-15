@@ -1,0 +1,36 @@
+{% load static %}
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body text-center">
+
+          <img src="{% static 'images/payment.svg' %}" alt="Payment" width="100" class="mb-4">
+
+          <h3 class="mb-3 text-primary">Confirm Your Payment</h3>
+          <p class="text-muted">Booking for: <strong>{{ booking.travel_package.title }}</strong></p>
+          <p>Total Amount: <strong>₹{{ booking.total_price }}</strong></p>
+
+          <form action="{% url 'payment_success' booking.id %}" method="POST">
+            {% csrf_token %}
+            <script 
+              src="https://checkout.razorpay.com/v1/checkout.js"
+              data-key="{{ razorpay_key }}"
+              data-amount="{{ amount }}"
+              data-currency="INR"
+              data-order_id="{{ order_id }}"
+              data-buttontext="Pay ₹{{ booking.total_price }} with Razorpay"
+              data-name="Trippify"
+              data-description="Booking Payment"
+              data-theme.color="#0d6efd">
+            </script>
+            <input type="hidden" name="booking_id" value="{{ booking.id }}">
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

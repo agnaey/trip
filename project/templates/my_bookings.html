@@ -1,37 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Bookings</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      padding-top: 50px;
+    }
+    .booking-card {
+      background: #ffffff;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .table thead {
+      background-color: #0d6efd;
+      color: white;
+    }
+    .table tbody tr:hover {
+      background-color: #f1f3f5;
+      transition: 0.3s;
+    }
+    h2 {
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+  </style>
+
 </head>
 <body>
-    <h2>My Bookings</h2>
 
-    {% if bookings %}
-        <table class="table">
+  <div class="container">
+    <div class="booking-card">
+
+      <h2 class="text-center">My Bookings</h2>
+
+      {% if bookings %}
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
             <thead>
-                <tr>
-                    <th>Package</th>
-                    <th>Number of People</th>
-                    <th>Total Price</th>
-                    <th>Status</th>
-                    <th>Booking Date</th>
-                </tr>
+              <tr>
+                <th>Package</th>
+                <th>No. of People</th>
+                <th>Total Price</th>
+                <th>Status</th>
+                <th>Booking Date</th>
+                <th>Action</th> <!-- New Column for Cancel Button -->
+              </tr>
             </thead>
             <tbody>
-                {% for booking in bookings %}
-                    <tr>
-                        <td>{{ booking.package.name }}</td>
-                        <td>{{ booking.number_of_people }}</td>
-                        <td>${{ booking.total_price }}</td>
-                        <td>{{ booking.status }}</td>
-                        <td>{{ booking.booking_date }}</td>
-                    </tr>
-                {% endfor %}
+              {% for booking in bookings %}
+                <tr>
+                  <td>{{ booking.package.name }}</td>
+                  <td>{{ booking.number_of_people }}</td>
+                  <td>${{ booking.total_price }}</td>
+                  <td>
+                    {% if booking.status == 'Confirmed' %}
+                      <span class="badge bg-success">Confirmed</span>
+                    {% elif booking.status == 'Pending' %}
+                      <span class="badge bg-warning text-dark">Pending</span>
+                    {% else %}
+                      <span class="badge bg-secondary">{{ booking.status }}</span>
+                    {% endif %}
+                  </td>
+                  <td>{{ booking.booking_date }}</td>
+                  <td>
+                    {% if booking.status != 'Cancelled' %}
+                      <a href="{% url 'cancel_booking' booking.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to cancel this booking?');">
+                        Cancel
+                      </a>
+                    {% else %}
+                      <span class="text-muted">Cancelled</span>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
             </tbody>
-        </table>
-    {% else %}
-        <p>You have no bookings yet.</p>
-    {% endif %}</body>
+          </table>
+        </div>
+      {% else %}
+        <div class="alert alert-info text-center" role="alert">
+          You have no bookings yet.
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+
+  <footer class="text-white pt-5 pb-4" style="background: linear-gradient(to right, #649ace, #569ebb);">
+    <div class="container text-center text-md-start">
+      <div class="row text-center text-md-start">
+  
+        <!-- Logo and Description -->
+        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h4 class="text-uppercase fw-bold mb-4">Trippify</h4>
+          <p>Your premium travel companion. Discover, explore, and create memories with hand-picked destinations across the globe.</p>
+        </div>
+  
+        <!-- Quick Links -->
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+          <h6 class="text-uppercase fw-bold mb-4">Quick Links</h6>
+          <p><a href="/" class="text-white text-decoration-none">Home</a></p>
+          <p><a href="/about" class="text-white text-decoration-none">About</a></p>
+          <p><a href="/contact" class="text-white text-decoration-none">Contact</a></p>
+        </div>
+  
+        <!-- Popular Locations -->
+        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+          <h6 class="text-uppercase fw-bold mb-4">Top Places</h6>
+          <p><a href="#" class="text-white text-decoration-none">Munnar</a></p>
+          <p><a href="#" class="text-white text-decoration-none">Wayanad</a></p>
+          <p><a href="#" class="text-white text-decoration-none">Goa</a></p>
+          <p><a href="#" class="text-white text-decoration-none">Manali</a></p>
+        </div>
+  
+        <!-- Contact Info -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+          <p><i class="fas fa-home me-2"></i> India, Kerala 678901</p>
+          <p><i class="fas fa-envelope me-2"></i> support@trippify.com</p>
+          <p><i class="fas fa-phone me-2"></i> +91 98765 43210</p>
+        </div>
+      </div>
+  
+      <!-- Social Media Icons -->
+      <div class="row mt-4">
+        <div class="col-md-12 text-center">
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-youtube"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-pinterest"></i></a>
+        </div>
+      </div>
+  
+      <!-- Copyright -->
+      <div class="text-center mt-4">
+        <p class="mb-0">&copy; 2025 <strong>Trippify</strong>. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
 </html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Update Package</h2>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>Title:</label><br>
+    <input type="text" name="title" value="{{ package.title }}" required><br><br>
+
+    <label>Duration (days):</label><br>
+    <input type="number" name="duration_days" value="{{ package.duration_days }}" required><br><br>
+
+    <label>Description:</label><br>
+    <textarea name="description" required>{{ package.description }}</textarea><br><br>
+
+    <label>Included:</label><br>
+    <textarea name="included" required>{{ package.included }}</textarea><br><br>
+
+    <label>Start Date:</label><br>
+    <input type="date" name="start_date" value="{{ package.start_date }}" required><br><br>
+
+    <label>End Date:</label><br>
+    <input type="date" name="end_date" value="{{ package.end_date }}" required><br><br>
+
+    <label>Image 1:</label><br>
+    <input type="file" name="image"><br>
+    <img src="{{ package.image.url }}" width="150"><br><br>
+
+    <label>Image 2:</label><br>
+    <input type="file" name="image2"><br>
+    <img src="{{ package.image2.url }}" width="150"><br><br>
+
+    <label>Image 3:</label><br>
+    <input type="file" name="image3"><br>
+    <img src="{{ package.image3.url }}" width="150"><br><br>
+
+    <button type="submit">Update</button>
+</form>
+
+</body>
+</html>

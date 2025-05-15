@@ -1,0 +1,25 @@
+<div class="container mt-4">
+    <h2>All Reviews</h2>
+    <table class="table table-bordered table-hover mt-3">
+      <thead class="table-light">
+        <tr>
+          <th>Customer</th>
+          <th>Rating</th>
+          <th>Comment</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for review in reviews %}
+        <tr>
+          <td>{{ review.customer.user.username }}</td>
+          <td>{{ review.rating }} / 5</td>
+          <td>{{ review.comment|truncatewords:15 }}</td>
+          <td>{{ review.created_at|date:"Y-m-d" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="text-center">No reviews submitted.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>

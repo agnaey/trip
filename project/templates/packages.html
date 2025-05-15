@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -213,12 +214,10 @@
                     <li class="nav-item">
                         <a class="btn btn-gradient nav-link active" style="border-radius: 50px; background-color: var(--primary-color);" href="{% url 'signup' %}">Signup</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'destinations' %}">Destinations</a>
-                    </li>
-                  
-                 
-                    <li class="nav-item">
+                    
+
+                                
+  <li class="nav-item">
                         <a class="nav-link" href="">About Us</a>
                     </li>
                     {% if user.is_authenticated %}
@@ -243,66 +242,87 @@
         </div>
     </nav>
 
-
-  <section class="py-5">
-    <div class="container">
-      <h2 class="section-title" data-aos="fade-up">Explore Our Travel Packages</h2>
-      <div class="row g-4">
-
-        <!-- Package 1 -->
-        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
-          <div class="card package-card h-100">
-            <img src="https://source.unsplash.com/400x300/?beach,resort" class="card-img-top package-img" alt="Beach Resort">
-            <div class="card-body">
-              <h5 class="card-title">Tropical Escape - Bali</h5>
-              <p class="card-text">5 nights stay in a beachfront villa with daily breakfast and island tours.</p>
-              <div class="d-flex justify-content-between align-items-center mt-3">
-                <span class="price-tag">$899</span>
-                <span class="stars">★★★★★</span>
+    <section class="py-5">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Explore Our Travel Packages</h2>
+        <div class="row g-4">
+          {% for package in packages %}
+          <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
+            <div class="card package-card h-100">
+              <img src="{{ package.image.url }}" class="card-img-top package-img" alt="{{ package.title }}">
+              <div class="card-body">
+                <h5 class="card-title">{{ package.title }}</h5>
+                <p class="card-text">{{ package.description|truncatewords:20 }}</p>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <span class="price-tag">rs.{{ package.price }}</span> <!-- Fake price logic -->
+                </div>
+                <a href="{% url 'viewpackagedetails' package.id %}" class="btn btn-outline-primary mt-2">View Details</a>
               </div>
-              <a href="#" class="btn btn-book w-100 mt-3">Book Now</a>
             </div>
           </div>
+          {% endfor %}
         </div>
+      </div>
+    </section>
 
-        <!-- Package 2 -->
-        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
-          <div class="card package-card h-100">
-            <img src="https://source.unsplash.com/400x300/?mountains,lodge" class="card-img-top package-img" alt="Mountain Retreat">
-            <div class="card-body">
-              <h5 class="card-title">Alpine Adventure - Switzerland</h5>
-              <p class="card-text">7 days exploring the Swiss Alps with guided hikes and luxury stays.</p>
-              <div class="d-flex justify-content-between align-items-center mt-3">
-                <span class="price-tag">$1299</span>
-                <span class="stars">★★★★☆</span>
-              </div>
-              <a href="#" class="btn btn-book w-100 mt-3">Book Now</a>
-            </div>
-          </div>
+    
+
+
+
+  <footer class="text-white pt-5 pb-4" style="background: linear-gradient(to right, #649ace, #569ebb);">
+    <div class="container text-center text-md-start">
+      <div class="row text-center text-md-start">
+  
+        <!-- Logo and Description -->
+        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h4 class="text-uppercase fw-bold mb-4">Trippify</h4>
+          <p>Your premium travel companion. Discover, explore, and create memories with hand-picked destinations across the globe.</p>
         </div>
-
-        <!-- Package 3 -->
-        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
-          <div class="card package-card h-100">
-            <img src="https://source.unsplash.com/400x300/?city,tour" class="card-img-top package-img" alt="City Tour">
-            <div class="card-body">
-              <h5 class="card-title">Urban Explorer - New York</h5>
-              <p class="card-text">3-day city tour covering iconic spots with private guides and luxury hotel.</p>
-              <div class="d-flex justify-content-between align-items-center mt-3">
-                <span class="price-tag">$749</span>
-                <span class="stars">★★★★☆</span>
-              </div>
-              <a href="#" class="btn btn-book w-100 mt-3">Book Now</a>
-            </div>
-          </div>
+  
+        <!-- Quick Links -->
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+          <h6 class="text-uppercase fw-bold mb-4">Quick Links</h6>
+          <p><a href="/" class="text-white text-decoration-none">Home</a></p>
+          <p><a href="/destinations" class="text-white text-decoration-none">Destinations</a></p>
+          <p><a href="/about" class="text-white text-decoration-none">About</a></p>
+          <p><a href="/contact" class="text-white text-decoration-none">Contact</a></p>
         </div>
-
-        <!-- Add more packages as needed -->
-
+  
+        <!-- Popular Locations -->
+        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+          <h6 class="text-uppercase fw-bold mb-4">Top Places</h6>
+          <p><a href="#" class="text-white text-decoration-none">Munnar</a></p>
+          <p><a href="#" class="text-white text-decoration-none">Wayanad</a></p>
+          <p><a href="#" class="text-white text-decoration-none">Goa</a></p>
+          <p><a href="#" class="text-white text-decoration-none">Manali</a></p>
+        </div>
+  
+        <!-- Contact Info -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+          <p><i class="fas fa-home me-2"></i> India, Kerala 678901</p>
+          <p><i class="fas fa-envelope me-2"></i> support@trippify.com</p>
+          <p><i class="fas fa-phone me-2"></i> +91 98765 43210</p>
+        </div>
+      </div>
+  
+      <!-- Social Media Icons -->
+      <div class="row mt-4">
+        <div class="col-md-12 text-center">
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-youtube"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-pinterest"></i></a>
+        </div>
+      </div>
+  
+      <!-- Copyright -->
+      <div class="text-center mt-4">
+        <p class="mb-0">&copy; 2025 <strong>Trippify</strong>. All rights reserved.</p>
       </div>
     </div>
-  </section>
-
+  </footer>
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

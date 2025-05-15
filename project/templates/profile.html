@@ -1,24 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create Profile</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #e0f7fa, #ffffff);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+    }
+    .profile-form-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 40px 30px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      animation: fadeIn 0.8s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h2 {
+      font-weight: 700;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #0d6efd;
+      font-size: 2rem;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-control {
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 1rem;
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      font-size: 1.1rem;
+      border-radius: 12px;
+      background-color: #0d6efd;
+      border: none;
+      transition: all 0.3s ease;
+    }
+    .btn-submit:hover {
+      background-color: #0b5ed7;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3);
+    }
+  </style>
 </head>
+
 <body>
-    <!-- profile_create.html -->
-<form method="POST">
-    {% csrf_token %}
-    <div class="form-group">
-        <label for="phone">Phone Number</label>
-        <input type="text" name="phone" id="phone" class="form-control" required>
+
+  <div class="container">
+    <div class="profile-form-card">
+
+      <h2>Create Profile</h2>
+
+      <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="phone" class="form-label">Phone Number</label>
+          <input type="text" name="phone" id="phone" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="address" class="form-label">Address</label>
+          <textarea name="address" id="address" rows="4" class="form-control" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-submit">Create Profile</button>
+      </form>
+
     </div>
-    <div class="form-group">
-        <label for="address">Address</label>
-        <textarea name="address" id="address" class="form-control" required></textarea>
+  </div>
+  <footer class="text-white pt-5 pb-4" style="background: linear-gradient(to right, #1f4037, #99f2c8);">
+    <div class="container text-center text-md-start">
+      <div class="row text-center text-md-start">
+  
+        <!-- Logo and Description -->
+        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h4 class="text-uppercase fw-bold mb-4">Trippify</h4>
+          <p>Your premium travel companion. Discover, explore, and create memories with hand-picked destinations across the globe.</p>
+        </div>
+  
+        <!-- Quick Links -->
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+          <h6 class="text-uppercase fw-bold mb-4">Quick Links</h6>
+          <p><a href="/" class="text-white text-decoration-none">Home</a></p>
+          <p><a href="/destinations" class="text-white text-decoration-none">Destinations</a></p>
+          <p><a href="/about" class="text-white text-decoration-none">About</a></p>
+          <p><a href="/contact" class="text-white text-decoration-none">Contact</a></p>
+        </div>
+  
+        <!-- Popular Locations -->
+        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+          <h6 class="text-uppercase fw-bold mb-4">Top Places</h6>
+          <p><a href="#" class="text-white text-decoration-none">Munnar</a></p>
+          <p><a href="#" class="text-white text-decoration-none">Wayanad</a></p>
+          <p><a href="#" class="text-white text-decoration-none">Goa</a></p>
+          <p><a href="#" class="text-white text-decoration-none">Manali</a></p>
+        </div>
+  
+        <!-- Contact Info -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+          <p><i class="fas fa-home me-2"></i> India, Kerala 678901</p>
+          <p><i class="fas fa-envelope me-2"></i> support@trippify.com</p>
+          <p><i class="fas fa-phone me-2"></i> +91 98765 43210</p>
+        </div>
+      </div>
+  
+      <!-- Social Media Icons -->
+      <div class="row mt-4">
+        <div class="col-md-12 text-center">
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-youtube"></i></a>
+          <a href="#" class="text-white me-4 fs-5"><i class="fab fa-pinterest"></i></a>
+        </div>
+      </div>
+  
+      <!-- Copyright -->
+      <div class="text-center mt-4">
+        <p class="mb-0">&copy; 2025 <strong>Trippify</strong>. All rights reserved.</p>
+      </div>
     </div>
-    <button type="submit" class="btn btn-primary">Create Profile</button>
-</form>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ package.title }} - Trippify</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        
+        .hero-section {
+            position: relative;
+            height: 60vh;
+            min-height: 500px;
+            color: white;
+            overflow: hidden;
+        }
+        
+        .hero-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+            z-index: -1;
+        }
+        
+        .package-details {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-top: -80px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .booking-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+        }
+        
+        .tab-button {
+            padding: 12px 20px;
+            font-weight: 600;
+            color: var(--dark-color);
+            background-color: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        .gallery-image {
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .gallery-image:hover {
+            transform: scale(1.03);
+        }
+        
+        .included-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .included-item i {
+            color: var(--primary-color);
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .btn-book-now {
+            background-color: var(--accent-color);
+            color: white;
+            font-weight: 600;
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            transition: all 0.3s;
+        }
+        
+        .btn-book-now:hover {
+            background-color: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.2);
+        }
+        
+        .package-feature {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            height: 100%;
+        }
+        
+        .package-feature i {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .related-package-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .related-package-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .related-package-img {
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .modal-fullscreen-image {
+            max-height: 90vh;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            height: calc(100% - 10px);
+            width: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 30px;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -39px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            border: 4px solid white;
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero-section d-flex align-items-center">
+        <img src="{{ package.image.url }}" alt="{{ package.title }}" class="hero-img">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold">{{ package.title }}</h1>
+                    <p class="lead mb-4"><i class="fas fa-calendar-alt me-2"></i> {{ package.duration_days }} Days | {{ package.start_date|date:"M d" }} - {{ package.end_date|date:"M d, Y" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mb-5">
+        <div class="row">
+            <!-- Left Column - Package Details -->
+            <div class="col-lg-8 mb-4">
+                <div class="package-details p-4 mb-4">
+                    <!-- Tabs Navigation -->
+                    <div class="d-flex flex-wrap border-bottom mb-4">
+                        <button class="tab-button active" id="tab-overview">Overview</button>
+                        <button class="tab-button" id="tab-itinerary">Itinerary</button>
+                        <button class="tab-button" id="tab-included">What's Included</button>
+                        <button class="tab-button" id="tab-gallery">Gallery</button>
+                    </div>
+                    
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+                        <!-- Overview Tab -->
+                        <div class="tab-pane fade show active" id="overview-content">
+                            <h3 class="mb-4">Package Overview</h3>
+                            <p class="mb-4">{{ package.description }}</p>
+                            
+                            <div class="row g-4 mt-2 mb-4">
+                                <div class="col-md-4">
+                                    <div class="package-feature">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <h5>Destination</h5>
+                                        <p class="mb-0">Premium Locations</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="package-feature">
+                                        <i class="fas fa-calendar-day"></i>
+                                        <h5>Duration</h5>
+                                        <p class="mb-0">{{ package.duration_days }} Days</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="package-feature">
+                                        <i class="fas fa-users"></i>
+                                        <h5>Group Size</h5>
+                                        <p class="mb-0">Max 12 People</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h4 class="mb-3">Highlights</h4>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Expert local guides</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Premium accommodations</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Curated experiences</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Transportation included</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Daily breakfast & select meals</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Small group experience</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Itinerary Tab -->
+                        <div class="tab-pane fade" id="itinerary-content">
+                            <h3 class="mb-4">Trip Itinerary</h3>
+                            
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <h4>Day 1: Arrival & Welcome</h4>
+                                    <p>Arrive at your destination and check into your premium accommodation. Meet your fellow travelers at the welcome dinner where your guide will brief you on the exciting adventure ahead.</p>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <h4>Day 2: Exploration Day</h4>
+                                    <p>After breakfast, embark on a guided tour of key attractions. Enjoy a special lunch at a local restaurant followed by free time to explore on your own in the afternoon.</p>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <h4>Day 3: Adventure Activities</h4>
+                                    <p>Experience thrilling adventure activities specially selected for this package. Enjoy a picnic lunch amidst beautiful scenery before continuing with afternoon activities.</p>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <h4>Day 4: Cultural Experience</h4>
+                                    <p>Immerse yourself in local culture with special cultural activities and interactions with locals. Learn about traditions and enjoy authentic culinary experiences.</p>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <h4>Day 5: Farewell</h4>
+                                    <p>Enjoy a leisurely morning before your departure. Final group photos and farewell lunch before transfers to the airport or continued journey.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- What's Included Tab -->
+                        <div class="tab-pane fade" id="included-content">
+                            <h3 class="mb-4">What's Included</h3>
+                            
+                            <div class="mb-4">
+                                {{ package.included|linebreaks }}
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="mb-3">Included:</h5>
+                                    <div class="included-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>4 nights premium accommodation</span>
+                                    </div>
+                                    <div class="included-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Daily breakfast and select meals</span>
+                                    </div>
+                                    <div class="included-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>Professional English-speaking guide</span>
+                                    </div>
+                                    <div class="included-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>All transportation during the tour</span>
+                                    </div>
+                                    <div class="included-item">
+                                        <i class="fas fa-check"></i>
+                                        <span>All entrance fees and activities</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h5 class="mb-3">Not Included:</h5>
+                                    <div class="included-item">
+                                        <i class="fas fa-times text-danger"></i>
+                                        <span>International flights</span>
+                                    </div>
+                                    <div class="included-item">
+                                        <i class="fas fa-times text-danger"></i>
+                                        <span>Travel insurance</span>
+                                    </div>
+                                    <div class="included-item">
+                                        <i class="fas fa-times text-danger"></i>
+                                        <span>Optional activities not mentioned</span>
+                                    </div>
+                                    <div class="included-item">
+                                        <i class="fas fa-times text-danger"></i>
+                                        <span>Personal expenses</span>
+                                    </div>
+                                    <div class="included-item">
+                                        <i class="fas fa-times text-danger"></i>
+                                        <span>Tips and gratuities</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Gallery Tab -->
+                        <div class="tab-pane fade" id="gallery-content">
+                            <h3 class="mb-4">Photo Gallery</h3>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <img src="{{ package.image.url }}" class="img-fluid gallery-image" alt="{{ package.title }}" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="{{ package.image.url }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <img src="{{ package.image2.url }}" class="img-fluid gallery-image" alt="{{ package.title }}" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="{{ package.image2.url }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <img src="{{ package.image3.url }}" class="img-fluid gallery-image" alt="{{ package.title }}" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="{{ package.image3.url }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Related Packages -->
+                <h3 class="mb-4">Similar Packages You Might Like</h3>
+                <div class="row g-4">
+                    {% for related in related_packages %}
+                    <div class="col-md-4">
+                        <div class="related-package-card">
+                            <img src="{{ related.image.url }}" class="img-fluid related-package-img" alt="{{ related.title }}">
+                            <div class="p-3">
+                                <h5>{{ related.title }}</h5>
+                                <p class="small text-muted mb-2">{{ related.duration_days }} Days | {{ related.start_date|date:"M d" }} - {{ related.end_date|date:"M d" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Right Column - Booking Card -->
+             <div class="col-lg-4">
+                <div class="booking-card p-4">
+                    <h4 class="mb-3">Book This Package</h4>
+                    
+                    <!-- <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                        <span class="fw-bold">Price</span>
+                        <span class="h4 mb-0 text-primary">${{ package.price }}</span>
+                    </div>
+                    
+                    <form>
+                        <div class="mb-3">
+                            <label for="bookingDate" class="form-label">Departure Date</label>
+                            <input type="date" class="form-control" id="bookingDate" value="{{ package.start_date|date:'Y-m-d' }}" min="{{ package.start_date|date:'Y-m-d' }}" max="{{ package.end_date|date:'Y-m-d' }}">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="guests" class="form-label">Number of Travelers</label>
+                            <select class="form-select" id="guests">
+                                <option value="1">1 Person</option>
+                                <option value="2" selected>2 People</option>
+                                <option value="3">3 People</option>
+                                <option value="4">4 People</option>
+                                <option value="5">5 People</option>
+                                <option value="6">6 People</option>
+                            </select>
+                        </div>
+                         -->
+                       <a href="{% url 'vehicles' %}"> <button type="button" class="btn btn-book-now w-100 mb-3">Book Now</button></a>
+                        
+                        
+                    </form>
+                    <hr class="my-4">
+                    
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas fa-phone-alt text-primary me-3"></i>
+                        <div>
+                            <h6 class="mb-0">Need Help?</h6>
+                            <p class="mb-0 small text-muted">Call us at +1 (800) 123-4567</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-envelope text-primary me-3"></i>
+                        <div>
+                            <h6 class="mb-0">Have Questions?</h6>
+                            <p class="mb-0 small text-muted">Email us at info@trippify.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="" id="modalImage" class="img-fluid modal-fullscreen-image" alt="Package Image">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab navigation
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-pane');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons and hide all content
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => {
+                        content.classList.remove('show');
+                        content.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabId = this.id.replace('tab-', '');
+                    const activeContent = document.getElementById(tabId + '-content');
+                    activeContent.classList.add('show');
+                    activeContent.classList.add('active');
+                });
+            });
+            
+            // Image modal
+            const imageModal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const galleryImages = document.querySelectorAll('.gallery-image');
+            
+            galleryImages.forEach(img => {
+                img.addEventListener('click', function() {
+                    const imgSrc = this.getAttribute('data-img');
+                    modalImage.src = imgSrc;
+                });
+            });
+            
+            // Calculate total price based on number of guests
+            const guestsSelect = document.getElementById('guests');
+            const priceDisplay = document.querySelector('.h4.text-primary');
+            const basePrice = 999;
+            
+            guestsSelect.addEventListener('change', function() {
+                const guests = parseInt(this.value);
+                const totalPrice = basePrice * guests;
+                priceDisplay.textContent = '₹' + totalPrice;
+            });
+        });
+    </script>
+</body>
+</html>
